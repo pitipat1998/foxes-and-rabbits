@@ -32,14 +32,9 @@ public class Rabbit extends Animal {
     // The rabbit's age.
     private int age;
 
-    /**
-     * Create a new rabbit. A rabbit may be created with age
-     * zero (a new born) or with a random age.
-     *
-     * @param randomAge If true, the rabbit will have a random age.
-     */
-    public Rabbit(boolean randomAge) {
-        super();
+    @Override
+    public void initialize(boolean randomAge) {
+        super.initialize(randomAge);
         age = 0;
         if (randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -54,15 +49,14 @@ public class Rabbit extends Animal {
      * @param newRabbits   A list to add newly born rabbits to.
      */
     @Override
-    public void act(Field currentField, Field updatedField, List newRabbits) {
+    public void act(Field currentField, Field updatedField, List<Animal> newRabbits) {
         incrementAge();
         if (isAlive()) {
             int births = breed();
             for (int b = 0; b < births; b++) {
-                Rabbit newRabbit = new Rabbit(false);
-                newRabbits.add(newRabbit);
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                newRabbit.setLocation(loc);
+                Rabbit newRabbit = (Rabbit) AnimalFactory.createAnimal(Rabbit.class.getSimpleName(), false, loc);
+                newRabbits.add(newRabbit);
                 updatedField.place(newRabbit, loc);
             }
             Location newLocation = updatedField.freeAdjacentLocation(getLocation());

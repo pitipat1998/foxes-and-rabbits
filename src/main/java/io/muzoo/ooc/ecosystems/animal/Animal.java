@@ -12,21 +12,14 @@ public abstract class Animal {
     // The animal's position
     private Location location;
 
-    /**
-     * Create a new animal. A animal may be created with age
-     * zero (a new born) or with a random age.
-     *
-     * @param randomAge If true, the rabbit will have a random age.
-     */
-    protected Animal(){
-        alive = true;
+    public void initialize(boolean randomAge) {
+        setAlive(true);
     }
-
     /**
      * set whether the animal is alive or not.
      * @param alive is animal alive or not
      */
-    protected void setAlive(boolean alive) {
+    void setAlive(boolean alive) {
         this.alive = alive;
     }
 
@@ -67,5 +60,5 @@ public abstract class Animal {
         this.location = location;
     }
 
-    public abstract void act(Field currentField, Field updatedField, List newAnimals);
+    public abstract void act(Field currentField, Field updatedField, List<Animal> newAnimals);
 }
