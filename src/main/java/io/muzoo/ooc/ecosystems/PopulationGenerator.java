@@ -1,6 +1,7 @@
 package io.muzoo.ooc.ecosystems;
 
-import io.muzoo.ooc.ecosystems.animal.AnimalFactory;
+import io.muzoo.ooc.ecosystems.actor.Actor;
+import io.muzoo.ooc.ecosystems.actor.animal.AnimalFactory;
 
 import java.util.Collections;
 import java.util.List;

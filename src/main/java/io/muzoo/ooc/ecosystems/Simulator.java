@@ -1,14 +1,12 @@
 package io.muzoo.ooc.ecosystems;
 
-import io.muzoo.ooc.ecosystems.animal.Animal;
-import io.muzoo.ooc.ecosystems.animal.Fox;
-import io.muzoo.ooc.ecosystems.animal.Rabbit;
+import io.muzoo.ooc.ecosystems.actor.Actor;
+import io.muzoo.ooc.ecosystems.actor.animal.Fox;
+import io.muzoo.ooc.ecosystems.actor.animal.Rabbit;
 
-import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Collections;
 import java.awt.Color;
 
 /**
@@ -105,8 +103,8 @@ public class Simulator {
 
         // let all animals act
         for (Iterator<Actor> iter = actors.iterator(); iter.hasNext(); ) {
-            Actor animal = iter.next();
-            animal.act(field, updatedField, newActors);
+            Actor actor = iter.next();
+            actor.act(field, updatedField, newActors);
         }
         // add new born animals to the list of animals
         actors.addAll(newActors);

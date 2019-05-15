@@ -1,6 +1,6 @@
-package io.muzoo.ooc.ecosystems.animal;
+package io.muzoo.ooc.ecosystems.actor.animal;
 
-import io.muzoo.ooc.ecosystems.Actor;
+import io.muzoo.ooc.ecosystems.actor.Actor;
 import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
 
@@ -15,7 +15,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Fox extends Animal{
+public class Fox extends Animal {
     // Characteristics shared by all foxes (static fields).
 
     // The age at which a fox can start to breed.
@@ -63,7 +63,7 @@ public class Fox extends Animal{
      *
      * @param currentField The field currently occupied.
      * @param updatedField The field to transfer to.
-     * @param newFoxes     A list to add newly born foxes to.
+     * @param newActors     A list to add newly born foxes to.
      */
 
     @Override

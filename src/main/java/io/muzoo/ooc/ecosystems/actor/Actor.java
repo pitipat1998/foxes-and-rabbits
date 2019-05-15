@@ -1,4 +1,6 @@
-package io.muzoo.ooc.ecosystems;
+package io.muzoo.ooc.ecosystems.actor;
+
+import io.muzoo.ooc.ecosystems.Field;
 
 import java.util.List;
 

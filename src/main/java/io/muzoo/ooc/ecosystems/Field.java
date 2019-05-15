@@ -1,5 +1,8 @@
 package io.muzoo.ooc.ecosystems;
 
+import io.muzoo.ooc.ecosystems.actor.Actor;
+import io.muzoo.ooc.ecosystems.actor.Actor;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,7 +21,7 @@ public class Field {
     // The depth and width of the field.
     private int depth, width;
     // Storage for the animals.
-    private Object[][] field;
+    private Actor[][] field;
 
     /**
      * Represent a field of the given dimensions.
@@ -29,7 +32,7 @@ public class Field {
     public Field(int depth, int width) {
         this.depth = depth;
         this.width = width;
-        field = new Object[depth][width];
+        field = new Actor[depth][width];
     }
 
     /**
@@ -48,12 +51,12 @@ public class Field {
      * If there is already an animal at the location it will
      * be lost.
      *
-     * @param animal The animal to be placed.
+     * @param drawableActor The animal to be placed.
      * @param row    Row coordinate of the location.
      * @param col    Column coordinate of the location.
      */
-    public void place(Object animal, int row, int col) {
-        place(animal, new Location(row, col));
+    public void place(Actor drawableActor, int row, int col) {
+        place(drawableActor, new Location(row, col));
     }
 
     /**
@@ -61,11 +64,11 @@ public class Field {
      * If there is already an animal at the location it will
      * be lost.
      *
-     * @param animal   The animal to be placed.
+     * @param drawableActor   The animal to be placed.
      * @param location Where to place the animal.
      */
-    public void place(Object animal, Location location) {
-        field[location.getRow()][location.getCol()] = animal;
+    public void place(Actor drawableActor, Location location) {
+        field[location.getRow()][location.getCol()] = drawableActor;
     }
 
     /**
@@ -74,7 +77,7 @@ public class Field {
      * @param location Where in the field.
      * @return The animal at the given location, or null if there is none.
      */
-    public Object getObjectAt(Location location) {
+    public Actor getObjectAt(Location location) {
         return getObjectAt(location.getRow(), location.getCol());
     }
 
@@ -85,7 +88,7 @@ public class Field {
      * @param col The desired column.
      * @return The animal at the given location, or null if there is none.
      */
-    public Object getObjectAt(int row, int col) {
+    public Actor getObjectAt(int row, int col) {
         return field[row][col];
     }
 
