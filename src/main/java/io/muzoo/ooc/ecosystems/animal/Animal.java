@@ -1,6 +1,9 @@
 package io.muzoo.ooc.ecosystems.animal;
 
+import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
+
+import java.util.List;
 
 public abstract class Animal {
 
@@ -23,7 +26,7 @@ public abstract class Animal {
      * set whether the animal is alive or not.
      * @param alive is animal alive or not
      */
-    public void setAlive(boolean alive) {
+    protected void setAlive(boolean alive) {
         this.alive = alive;
     }
 
@@ -41,7 +44,7 @@ public abstract class Animal {
      *
      * @return location of the animal
      */
-    public Location getLocation() {
+    protected Location getLocation() {
         return location;
     }
 
@@ -63,4 +66,6 @@ public abstract class Animal {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    public abstract void act(Field currentField, Field updatedField, List newAnimals);
 }

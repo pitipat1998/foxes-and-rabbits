@@ -65,7 +65,9 @@ public class Fox extends Animal{
      * @param updatedField The field to transfer to.
      * @param newFoxes     A list to add newly born foxes to.
      */
-    public void hunt(Field currentField, Field updatedField, List newFoxes) {
+
+    @Override
+    public void act(Field currentField, Field updatedField, List newFoxes) {
         incrementAge();
         incrementHunger();
         if (isAlive()) {
