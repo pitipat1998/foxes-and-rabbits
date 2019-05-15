@@ -9,6 +9,8 @@ public abstract class Animal {
 
     // Whether the animal is alive or not.
     private boolean alive;
+    // The animal's age.
+    private int age;
     // The animal's position
     private Location location;
 
@@ -31,6 +33,12 @@ public abstract class Animal {
     public boolean isAlive() {
         return alive;
     }
+
+    protected int getAge() { return age; }
+
+    protected void setAge(int age) { this.age = age; }
+
+    protected abstract void incrementAge();
 
     /**
      * get location of the animal
@@ -61,4 +69,17 @@ public abstract class Animal {
     }
 
     public abstract void act(Field currentField, Field updatedField, List<Animal> newAnimals);
+
+    /**
+     * A animal can breed if it has reached the breeding age.
+     */
+    protected abstract boolean canBreed();
+
+    /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     *
+     * @return The number of births (may be zero).
+     */
+    protected abstract int breed();
 }
