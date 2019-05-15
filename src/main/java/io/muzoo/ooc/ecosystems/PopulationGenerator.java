@@ -1,13 +1,9 @@
 package io.muzoo.ooc.ecosystems;
 
-import io.muzoo.ooc.ecosystems.animal.Animal;
 import io.muzoo.ooc.ecosystems.animal.AnimalFactory;
-import io.muzoo.ooc.ecosystems.animal.Fox;
-import io.muzoo.ooc.ecosystems.animal.Rabbit;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class PopulationGenerator {
 
@@ -32,18 +28,18 @@ public class PopulationGenerator {
      *
      * @param field The field to be populated.
      */
-    public void populate(Field field, List<Animal> animals) {
+    public void populate(Field field, List<Actor> actors) {
         field.clear();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Animal animal = AnimalFactory.createRandomAnimal(true, row, col);
-                if (animal != null){
-                    animals.add(animal);
-                    field.place(animal, row, col);
+                Actor actor = AnimalFactory.createRandomAnimal(true, row, col);
+                if (actor != null){
+                    actors.add(actor);
+                    field.place(actor, row, col);
                 }
                 // else leave the location empty.
             }
         }
-        Collections.shuffle(animals);
+        Collections.shuffle(actors);
     }
 }

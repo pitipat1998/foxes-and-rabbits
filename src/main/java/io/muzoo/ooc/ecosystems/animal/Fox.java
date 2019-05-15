@@ -1,5 +1,6 @@
 package io.muzoo.ooc.ecosystems.animal;
 
+import io.muzoo.ooc.ecosystems.Actor;
 import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
 
@@ -66,7 +67,7 @@ public class Fox extends Animal{
      */
 
     @Override
-    public void act(Field currentField, Field updatedField, List newFoxes) {
+    public void act(Field currentField, Field updatedField, List<Actor> newActors) {
         incrementAge();
         incrementHunger();
         if (isAlive()) {
@@ -75,7 +76,7 @@ public class Fox extends Animal{
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
                 Fox newFox = (Fox) AnimalFactory.createAnimal(Fox.class.getSimpleName(), false, loc);
-                newFoxes.add(newFox);
+                newActors.add(newFox);
                 updatedField.place(newFox, loc);
             }
             // Move towards the source of food if found.

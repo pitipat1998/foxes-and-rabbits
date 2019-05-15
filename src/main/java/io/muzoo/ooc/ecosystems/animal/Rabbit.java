@@ -1,5 +1,6 @@
 package io.muzoo.ooc.ecosystems.animal;
 
+import io.muzoo.ooc.ecosystems.Actor;
 import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
 
@@ -41,17 +42,17 @@ public class Rabbit extends Animal {
      * around. Sometimes it will breed or die of old age.
      *
      * @param updatedField The field to transfer to.
-     * @param newRabbits   A list to add newly born rabbits to.
+     * @param newActors   A list to add newly born rabbits to.
      */
     @Override
-    public void act(Field currentField, Field updatedField, List<Animal> newRabbits) {
+    public void act(Field currentField, Field updatedField, List<Actor> newActors) {
         incrementAge();
         if (isAlive()) {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
                 Rabbit newRabbit = (Rabbit) AnimalFactory.createAnimal(Rabbit.class.getSimpleName(), false, loc);
-                newRabbits.add(newRabbit);
+                newActors.add(newRabbit);
                 updatedField.place(newRabbit, loc);
             }
             Location newLocation = updatedField.freeAdjacentLocation(getLocation());
@@ -70,6 +71,7 @@ public class Rabbit extends Animal {
      * Increase the age.
      * This could result in the rabbit's death.
      */
+    @Override
     protected void incrementAge() {
         setAge(getAge()+1);
         if (getAge() > MAX_AGE) {
@@ -83,6 +85,7 @@ public class Rabbit extends Animal {
      *
      * @return The number of births (may be zero).
      */
+    @Override
     protected int breed() {
         int births = 0;
         if (canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
@@ -96,6 +99,7 @@ public class Rabbit extends Animal {
      *
      * @return true if the rabbit can breed, false otherwise.
      */
+    @Override
     protected boolean canBreed() {
         return getAge() >= BREEDING_AGE;
     }

@@ -26,10 +26,10 @@ public class Simulator {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 50;
 
-    // The list of animals in the field
-    private List<Animal> animals;
-    // The list of animals just born
-    private List<Animal> newAnimals;
+    // The list of actors
+    private List<Actor> actors;
+    // The list of actors just born
+    private List<Actor> newActors;
     // The current state of the field.
     private Field field;
     // A second field, used to build the next stage of the simulation.
@@ -61,8 +61,8 @@ public class Simulator {
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
-        animals = new ArrayList<>();
-        newAnimals = new ArrayList<>();
+        actors = new ArrayList<>();
+        newActors = new ArrayList<>();
         field = new Field(depth, width);
         updatedField = new Field(depth, width);
         populationGenerator = PopulationGenerator.getInstance();
@@ -101,15 +101,15 @@ public class Simulator {
      */
     public void simulateOneStep() {
         step++;
-        newAnimals.clear();
+        newActors.clear();
 
         // let all animals act
-        for (Iterator<Animal> iter = animals.iterator(); iter.hasNext(); ) {
-            Animal animal = iter.next();
-            animal.act(field, updatedField, newAnimals);
+        for (Iterator<Actor> iter = actors.iterator(); iter.hasNext(); ) {
+            Actor animal = iter.next();
+            animal.act(field, updatedField, newActors);
         }
         // add new born animals to the list of animals
-        animals.addAll(newAnimals);
+        actors.addAll(newActors);
 
         // Swap the field and updatedField at the end of the step.
         Field temp = field;
@@ -126,10 +126,10 @@ public class Simulator {
      */
     public void reset() {
         step = 0;
-        animals.clear();
+        actors.clear();
         field.clear();
         updatedField.clear();
-        populationGenerator.populate(field, animals);
+        populationGenerator.populate(field, actors);
 
         // Show the starting state in the view.
         view.showStatus(step, field);

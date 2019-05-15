@@ -1,11 +1,12 @@
 package io.muzoo.ooc.ecosystems.animal;
 
+import io.muzoo.ooc.ecosystems.Actor;
 import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
 
 import java.util.List;
 
-public abstract class Animal {
+public abstract class Animal implements Actor {
 
     // Whether the animal is alive or not.
     private boolean alive;
@@ -32,6 +33,11 @@ public abstract class Animal {
      */
     public boolean isAlive() {
         return alive;
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAlive();
     }
 
     protected int getAge() { return age; }
@@ -67,8 +73,6 @@ public abstract class Animal {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    public abstract void act(Field currentField, Field updatedField, List<Animal> newAnimals);
 
     /**
      * A animal can breed if it has reached the breeding age.
