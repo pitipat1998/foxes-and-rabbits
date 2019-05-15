@@ -32,6 +32,13 @@ public abstract class Animal implements Actor {
         return alive;
     }
 
+    /**
+     * Tell the rabbit that it's dead now :(
+     */
+    public void setDead() {
+        setAlive(false);
+    }
+
     @Override
     public boolean isActive() {
         return isAlive();

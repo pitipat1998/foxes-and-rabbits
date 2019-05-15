@@ -10,9 +10,11 @@ import java.util.Random;
 public class AnimalFactory {
 
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
+    private static final double FOX_CREATION_PROBABILITY = 0.04;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;
+    private static final double RABBIT_CREATION_PROBABILITY = 0.10;
+    // The probability that a tiger will be created in any given grid position
+    private static final double TIGER_CREATION_PROBABILITY = 0.01;
 
     // Randomizer
     private static Random rand = new Random();
@@ -22,6 +24,7 @@ public class AnimalFactory {
         {
             put(Rabbit.class, RABBIT_CREATION_PROBABILITY);
             put(Fox.class, FOX_CREATION_PROBABILITY);
+            put(Tiger.class, TIGER_CREATION_PROBABILITY);
         }
     };
 
@@ -30,6 +33,7 @@ public class AnimalFactory {
         {
             put(Rabbit.class.getSimpleName(), Rabbit.class);
             put(Fox.class.getSimpleName(), Fox.class);
+            put(Tiger.class.getSimpleName(), Tiger.class);
         }
     };
 

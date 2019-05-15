@@ -15,7 +15,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Fox extends Animal {
+public class Fox extends Animal implements Predator{
     // Characteristics shared by all foxes (static fields).
 
     // The age at which a fox can start to breed.
@@ -107,7 +107,7 @@ public class Fox extends Animal {
     /**
      * Make this fox more hungry. This could result in the fox's death.
      */
-    private void incrementHunger() {
+    public void incrementHunger() {
         foodLevel--;
         if (foodLevel <= 0) {
             setAlive(false);
@@ -121,7 +121,7 @@ public class Fox extends Animal {
      * @param location Where in the field it is located.
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood(Field field, Location location) {
+    public Location findFood(Field field, Location location) {
         Iterator adjacentLocations =
                 field.adjacentLocations(location);
         while (adjacentLocations.hasNext()) {
@@ -130,7 +130,7 @@ public class Fox extends Animal {
             if (animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if (rabbit.isAlive()) {
-                    rabbit.setEaten();
+                    rabbit.setDead();
                     foodLevel = RABBIT_FOOD_VALUE;
                     return where;
                 }
@@ -139,11 +139,12 @@ public class Fox extends Animal {
         return null;
     }
 
-
+    @Override
     protected boolean canBreed() {
         return getAge() >= BREEDING_AGE;
     }
 
+    @Override
     protected int breed() {
         int births = 0;
         if (canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {

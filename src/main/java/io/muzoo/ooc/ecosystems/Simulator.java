@@ -3,6 +3,7 @@ package io.muzoo.ooc.ecosystems;
 import io.muzoo.ooc.ecosystems.actor.Actor;
 import io.muzoo.ooc.ecosystems.actor.animal.Fox;
 import io.muzoo.ooc.ecosystems.actor.animal.Rabbit;
+import io.muzoo.ooc.ecosystems.actor.animal.Tiger;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class Simulator {
         view = new SimulatorView(depth, width);
         view.setColor(Fox.class, Color.blue);
         view.setColor(Rabbit.class, Color.orange);
+        view.setColor(Tiger.class, Color.red);
 
         // Setup a valid starting point.
         reset();

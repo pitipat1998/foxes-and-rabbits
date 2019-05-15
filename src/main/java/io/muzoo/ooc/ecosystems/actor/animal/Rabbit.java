@@ -104,11 +104,6 @@ public class Rabbit extends Animal {
         return getAge() >= BREEDING_AGE;
     }
 
-    /**
-     * Tell the rabbit that it's dead now :(
-     */
-    public void setEaten() {
-        setAlive(false);
-    }
+
 
 }
