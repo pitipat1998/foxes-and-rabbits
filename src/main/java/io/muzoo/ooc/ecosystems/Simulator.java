@@ -25,15 +25,11 @@ public class Simulator {
     private static final int DEFAULT_WIDTH = 50;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 50;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;
 
     // The list of animals in the field
     private List<Animal> animals;
     // The list of animals just born
-    private List newAnimals;
+    private List<Animal> newAnimals;
     // The current state of the field.
     private Field field;
     // A second field, used to build the next stage of the simulation.
@@ -42,6 +38,8 @@ public class Simulator {
     private int step;
     // A graphical view of the simulation.
     private SimulatorView view;
+    // A population generator
+    private PopulationGenerator populationGenerator;
 
     /**
      * Construct a simulation field with default size.
@@ -63,10 +61,11 @@ public class Simulator {
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
-        animals = new ArrayList<Animal>();
-        newAnimals = new ArrayList();
+        animals = new ArrayList<>();
+        newAnimals = new ArrayList<>();
         field = new Field(depth, width);
         updatedField = new Field(depth, width);
+        populationGenerator = PopulationGenerator.getInstance();
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
@@ -130,36 +129,11 @@ public class Simulator {
         animals.clear();
         field.clear();
         updatedField.clear();
-        populate(field);
+        populationGenerator.populate(field, animals);
 
         // Show the starting state in the view.
         view.showStatus(step, field);
     }
 
-    /**
-     * Populate a field with foxes and rabbits.
-     *
-     * @param field The field to be populated.
-     */
-    private void populate(Field field) {
-        Random rand = new Random();
-        field.clear();
-        for (int row = 0; row < field.getDepth(); row++) {
-            for (int col = 0; col < field.getWidth(); col++) {
-                if (rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Fox fox = new Fox(true);
-                    animals.add(fox);
-                    fox.setLocation(row, col);
-                    field.place(fox, row, col);
-                } else if (rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Rabbit rabbit = new Rabbit(true);
-                    animals.add(rabbit);
-                    rabbit.setLocation(row, col);
-                    field.place(rabbit, row, col);
-                }
-                // else leave the location empty.
-            }
-        }
-        Collections.shuffle(animals);
-    }
+
 }
