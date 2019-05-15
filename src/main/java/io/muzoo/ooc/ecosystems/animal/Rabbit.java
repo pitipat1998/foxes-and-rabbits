@@ -1,4 +1,7 @@
-package io.muzoo.ooc.ecosystems;
+package io.muzoo.ooc.ecosystems.animal;
+
+import io.muzoo.ooc.ecosystems.Field;
+import io.muzoo.ooc.ecosystems.Location;
 
 import java.util.List;
 import java.util.Random;
@@ -10,7 +13,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Rabbit {
+public class Rabbit extends Animal {
     // Characteristics shared by all rabbits (static fields).
 
     // The age at which a rabbit can start to breed.
@@ -28,10 +31,6 @@ public class Rabbit {
 
     // The rabbit's age.
     private int age;
-    // Whether the rabbit is alive or not.
-    private boolean alive;
-    // The rabbit's position
-    private Location location;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -40,8 +39,8 @@ public class Rabbit {
      * @param randomAge If true, the rabbit will have a random age.
      */
     public Rabbit(boolean randomAge) {
+        super();
         age = 0;
-        alive = true;
         if (randomAge) {
             age = rand.nextInt(MAX_AGE);
         }
@@ -56,23 +55,23 @@ public class Rabbit {
      */
     public void run(Field updatedField, List newRabbits) {
         incrementAge();
-        if (alive) {
+        if (isAlive()) {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Rabbit newRabbit = new Rabbit(false);
                 newRabbits.add(newRabbit);
-                Location loc = updatedField.randomAdjacentLocation(location);
+                Location loc = updatedField.randomAdjacentLocation(getLocation());
                 newRabbit.setLocation(loc);
                 updatedField.place(newRabbit, loc);
             }
-            Location newLocation = updatedField.freeAdjacentLocation(location);
+            Location newLocation = updatedField.freeAdjacentLocation(getLocation());
             // Only transfer to the updated field if there was a free location
             if (newLocation != null) {
                 setLocation(newLocation);
                 updatedField.place(this, newLocation);
             } else {
                 // can neither move nor stay - overcrowding - all locations taken
-                alive = false;
+                setAlive(false);
             }
         }
     }
@@ -84,7 +83,7 @@ public class Rabbit {
     private void incrementAge() {
         age++;
         if (age > MAX_AGE) {
-            alive = false;
+            setAlive(false);
         }
     }
 
@@ -112,37 +111,10 @@ public class Rabbit {
     }
 
     /**
-     * Check whether the rabbit is alive or not.
-     *
-     * @return true if the rabbit is still alive.
-     */
-    public boolean isAlive() {
-        return alive;
-    }
-
-    /**
      * Tell the rabbit that it's dead now :(
      */
     public void setEaten() {
-        alive = false;
+        setAlive(false);
     }
 
-    /**
-     * Set the animal's location.
-     *
-     * @param row The vertical coordinate of the location.
-     * @param col The horizontal coordinate of the location.
-     */
-    public void setLocation(int row, int col) {
-        this.location = new Location(row, col);
-    }
-
-    /**
-     * Set the rabbit's location.
-     *
-     * @param location The rabbit's location.
-     */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 }

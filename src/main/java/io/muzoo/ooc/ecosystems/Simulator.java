@@ -1,5 +1,8 @@
 package io.muzoo.ooc.ecosystems;
 
+import io.muzoo.ooc.ecosystems.animal.Fox;
+import io.muzoo.ooc.ecosystems.animal.Rabbit;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
