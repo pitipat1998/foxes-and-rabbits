@@ -6,13 +6,10 @@ import io.muzoo.ooc.ecosystems.actor.Actor;
 
 import java.util.List;
 
-public class Hunter implements Actor {
+public class Hunter extends Human {
 
     // maximum number of shot
     private static final int MAXIMUM_SHOTS = 10;
-
-    // The hunter's position
-    private Location location;
 
     @Override
     public void act(Field currentField, Field updatedField, List<Actor> newActors) {
@@ -24,21 +21,13 @@ public class Hunter implements Actor {
             }
         }
 
-        Location newLocation = updatedField.freeAdjacentLocation(location);
+        Location newLocation = updatedField.freeAdjacentLocation(getLocation());
             // Only transfer to the updated field if there was a free location
             if (newLocation != null) {
-                location = newLocation;
+                setLocation(newLocation);
                 updatedField.place(this, newLocation);
             }
     }
 
-    @Override
-    public boolean isActive() {
-        return true;
-    }
 
-    @Override
-    public void setActive(boolean active) {
-
-    }
 }

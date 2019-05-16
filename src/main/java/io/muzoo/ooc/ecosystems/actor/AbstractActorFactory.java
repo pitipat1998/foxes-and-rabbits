@@ -1,6 +1,7 @@
 package io.muzoo.ooc.ecosystems.actor;
 
 import io.muzoo.ooc.ecosystems.actor.animal.AnimalFactory;
+import io.muzoo.ooc.ecosystems.actor.human.HumanFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,14 +10,15 @@ import java.util.Map;
 import java.util.Random;
 
 public class AbstractActorFactory {
-    private static final double ANIMAL_CREATION_PROBABILITY = 1;
-    private static final double HUMAN_CREATION_PROBABILITY = 0.5;
+    private static final double ANIMAL_CREATION_PROBABILITY = 0.95;
+    private static final double HUMAN_CREATION_PROBABILITY = 0.05;
 
     private static Random rand = new Random();
     private static Map<Class<? extends ActorFactory>, Double> actorFactoryProbabilities
             = new LinkedHashMap<Class<? extends ActorFactory>, Double>() {
         {
             put(AnimalFactory.class, ANIMAL_CREATION_PROBABILITY);
+            put(HumanFactory.class, HUMAN_CREATION_PROBABILITY);
         }
     };
 

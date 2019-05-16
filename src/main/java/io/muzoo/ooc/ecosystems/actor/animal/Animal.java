@@ -5,7 +5,7 @@ import io.muzoo.ooc.ecosystems.Location;
 
 public abstract class Animal implements Actor {
 
-    protected AnimalFactory animalFactory = new AnimalFactory();
+    protected AnimalFactory animalFactory = AnimalFactory.getInstance();
 
     // Whether the animal is alive or not.
     private boolean alive;

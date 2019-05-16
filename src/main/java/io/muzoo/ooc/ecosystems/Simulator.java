@@ -4,6 +4,7 @@ import io.muzoo.ooc.ecosystems.actor.Actor;
 import io.muzoo.ooc.ecosystems.actor.animal.Fox;
 import io.muzoo.ooc.ecosystems.actor.animal.Rabbit;
 import io.muzoo.ooc.ecosystems.actor.animal.Tiger;
+import io.muzoo.ooc.ecosystems.actor.human.Hunter;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class Simulator {
         view.setColor(Fox.class, Color.blue);
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Tiger.class, Color.red);
+        view.setColor(Hunter.class, Color.magenta);
 
         // Setup a valid starting point.
         reset();

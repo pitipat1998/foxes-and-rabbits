@@ -14,6 +14,8 @@ public class AnimalFactory implements ActorFactory {
     // singleton object
     private static AnimalFactory animalFactory = null;
 
+    private AnimalFactory() {}
+
     // The probability that a fox will be created in any given grid position.
     private final double FOX_CREATION_PROBABILITY = 0.04;
     // The probability that a rabbit will be created in any given grid position.
