@@ -10,23 +10,23 @@ import java.util.Random;
 
 public class Tiger extends Animal implements Predator{
     // The age at which a tiger can start to breed.
-    private static final int BREEDING_AGE = 50;
+    private int breedingAge = 50;
     // The age to which a tiger can live.
-    private static final int MAX_AGE = 150;
+    private int maxAge = 150;
     // The likelihood of a tiger breeding.
-    private static final double BREEDING_PROBABILITY = 0.05;
+    private double breedingProbability = 0.1;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private int maxLitterSize = 2;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 5;
+    private int rabbitFoodValue = 4;
     // The food value of a single fox. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
-    private static final int FOX_FOOD_VALUE = 6;
+    private int foxFoodValue = 5;
     // A shared random number generator to control breeding.
     private static final Random rand = new Random();
 
-    private int[] foods = {FOX_FOOD_VALUE, RABBIT_FOOD_VALUE};
+    private int[] foods = {foxFoodValue, rabbitFoodValue};
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
@@ -34,12 +34,36 @@ public class Tiger extends Animal implements Predator{
         initialize(randomAge);
     }
 
+    public int getBreedingAge() {
+        return breedingAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public double getBreedingProbability() {
+        return breedingProbability;
+    }
+
+    public int getMaxLitterSize() {
+        return maxLitterSize;
+    }
+
+    public int getRabbitFoodValue() {
+        return rabbitFoodValue;
+    }
+
+    public int getFoxFoodValue() {
+        return foxFoodValue;
+    }
+
     @Override
     public void initialize(boolean randomAge) {
         super.initialize(randomAge);
         int foodIdx = rand.nextInt(foods.length);
         if (randomAge) {
-            setAge(rand.nextInt(MAX_AGE));
+            setAge(rand.nextInt(maxAge));
             foodLevel = rand.nextInt(foods[foodIdx]);
         } else {
             // leave age at 0
@@ -50,21 +74,21 @@ public class Tiger extends Animal implements Predator{
     @Override
     protected void incrementAge() {
         setAge(getAge()+1);
-        if (getAge() > MAX_AGE) {
+        if (getAge() > maxAge) {
             setAlive(false);
         }
     }
 
     @Override
     protected boolean canBreed() {
-        return getAge() >= BREEDING_AGE;
+        return getAge() >= breedingAge;
     }
 
     @Override
     protected int breed() {
         int births = 0;
-        if (canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
+        if (canBreed() && rand.nextDouble() <= breedingProbability) {
+            births = rand.nextInt(maxLitterSize) + 1;
         }
         return births;
     }
@@ -110,7 +134,7 @@ public class Tiger extends Animal implements Predator{
                 Rabbit rabbit = (Rabbit) actor;
                 if (rabbit.isAlive()) {
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                    foodLevel = rabbitFoodValue;
                     return where;
                 }
             }
@@ -118,7 +142,7 @@ public class Tiger extends Animal implements Predator{
                 Fox fox = (Fox) actor;
                 if (fox.isAlive()) {
                     fox.setDead();
-                    foodLevel = FOX_FOOD_VALUE;
+                    foodLevel = foxFoodValue;
                     return where;
                 }
             }
@@ -132,5 +156,84 @@ public class Tiger extends Animal implements Predator{
         if (foodLevel <= 0) {
             setAlive(false);
         }
+    }
+
+    @Override
+    public Animal clone() {
+        return new TigerBuilder(this.isRandomAge())
+                .breedingAge(this.getBreedingAge())
+                .maxAge(this.getMaxAge())
+                .breedingProbability(this.getBreedingProbability())
+                .maxLitterSize(this.getMaxLitterSize())
+                .rabbitFoodValue(this.getRabbitFoodValue())
+                .foxFoodValue(this.getFoxFoodValue())
+                .build();
+    }
+
+    public static class TigerBuilder {
+        private Integer breedingAge;
+        private Integer maxAge;
+        private Double breedingProbability;
+        private Integer maxLitterSize;
+        private Integer rabbitFoodValue;
+        private Integer foxFoodValue;
+        private boolean randomAge;
+
+        public TigerBuilder(boolean randomAge){
+            this.randomAge = randomAge;
+        }
+
+        public TigerBuilder breedingAge(int value){
+            this.breedingAge = value;
+            return this;
+        }
+
+        public TigerBuilder maxAge(int value){
+            this.maxAge = value;
+            return this;
+        }
+
+        public TigerBuilder breedingProbability(double value){
+            this.breedingProbability = value;
+            return this;
+        }
+
+        public TigerBuilder maxLitterSize(int value){
+            this.maxLitterSize = value;
+            return this;
+        }
+
+        public TigerBuilder randomAge(boolean value){
+            this.randomAge = value;
+            return this;
+        }
+
+        public TigerBuilder rabbitFoodValue(int value){
+            this.rabbitFoodValue = value;
+            return this;
+        }
+
+        public TigerBuilder foxFoodValue(int value){
+            this.foxFoodValue = value;
+            return this;
+        }
+
+        public Tiger build(){
+            Tiger tiger = new Tiger(randomAge);
+            if(this.breedingAge != null)
+                tiger.breedingAge = this.breedingAge;
+            if(this.maxAge != null)
+                tiger.maxAge = this.maxAge;
+            if(this.breedingProbability != null)
+                tiger.breedingProbability = this.breedingProbability;
+            if(this.maxLitterSize != null)
+                tiger.maxLitterSize = this.maxLitterSize;
+            if(this.rabbitFoodValue != null)
+                tiger.rabbitFoodValue = this.rabbitFoodValue;
+            if(this.foxFoodValue != null)
+                tiger.foxFoodValue = this.foxFoodValue;
+            return tiger;
+        }
+
     }
 }

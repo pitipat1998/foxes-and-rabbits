@@ -15,19 +15,20 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Fox extends Animal implements Predator{
+public class Fox extends Animal implements Predator {
+
     // Characteristics shared by all foxes (static fields).
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 10;
+    private int breedingAge = 30;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
+    private int maxAge = 150;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.09;
+    private double breedingProbability = 0.15;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 3;
+    private int maxLitterSize = 3;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int RABBIT_FOOD_VALUE = 4;
+    private int rabbitFoodValue = 4;
     // A shared random number generator to control breeding.
     private static final Random rand = new Random();
 
@@ -38,6 +39,26 @@ public class Fox extends Animal implements Predator{
 
     public Fox(boolean randomAge){
         initialize(randomAge);
+    }
+
+    public int getBreedingAge() {
+        return breedingAge;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public double getBreedingProbability() {
+        return breedingProbability;
+    }
+
+    public int getMaxLitterSize() {
+        return maxLitterSize;
+    }
+
+    public int getRabbitFoodValue() {
+        return rabbitFoodValue;
     }
 
     /**
@@ -51,11 +72,11 @@ public class Fox extends Animal implements Predator{
         super.initialize(randomAge);
         setAge(0);
         if (randomAge) {
-            setAge(rand.nextInt(MAX_AGE));
-            foodLevel = rand.nextInt(RABBIT_FOOD_VALUE);
+            setAge(rand.nextInt(maxAge));
+            foodLevel = rand.nextInt(rabbitFoodValue);
         } else {
             // leave age at 0
-            foodLevel = RABBIT_FOOD_VALUE;
+            foodLevel = rabbitFoodValue;
         }
     }
 
@@ -79,7 +100,7 @@ public class Fox extends Animal implements Predator{
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
 //                Fox newFox = (Fox) animalFactory.create(Fox.class.getSimpleName(), false, loc);
-                Fox newFox = new Fox(false);
+                Fox newFox = (Fox) this.clone();
                 newFox.setLocation(loc);
                 newActors.add(newFox);
                 updatedField.place(newFox, loc);
@@ -104,7 +125,7 @@ public class Fox extends Animal implements Predator{
      */
     protected void incrementAge() {
         setAge(getAge()+1);
-        if (getAge() > MAX_AGE) {
+        if (getAge() > maxAge) {
             setAlive(false);
         }
     }
@@ -136,7 +157,7 @@ public class Fox extends Animal implements Predator{
                 Rabbit rabbit = (Rabbit) actor;
                 if (rabbit.isAlive()) {
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
+                    foodLevel = rabbitFoodValue;
                     return where;
                 }
             }
@@ -146,17 +167,87 @@ public class Fox extends Animal implements Predator{
 
     @Override
     protected boolean canBreed() {
-        return getAge() >= BREEDING_AGE;
+        return getAge() >= breedingAge;
     }
 
     @Override
     protected int breed() {
         int births = 0;
-        if (canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
-            births = rand.nextInt(MAX_LITTER_SIZE) + 1;
+        if (canBreed() && rand.nextDouble() <= breedingProbability) {
+            births = rand.nextInt(maxLitterSize) + 1;
         }
         return births;
     }
 
+    @Override
+    public Animal clone() {
+        return new FoxBuilder(this.isRandomAge())
+                .breedingAge(this.getBreedingAge())
+                .maxAge(this.getMaxAge())
+                .breedingProbability(this.getBreedingProbability())
+                .maxLitterSize(this.getMaxLitterSize())
+                .rabbitFoodValue(this.getRabbitFoodValue())
+                .build();
+    }
+
+    public static class FoxBuilder {
+        private Integer breedingAge = 30;
+        private Integer maxAge = 150;
+        private Double breedingProbability = 0.2;
+        private Integer maxLitterSize = 3;
+        private Integer rabbitFoodValue = 4;
+        private boolean randomAge;
+
+        public FoxBuilder(boolean randomAge){
+            this.randomAge = randomAge;
+        }
+
+        public FoxBuilder breedingAge(int value){
+            this.breedingAge = value;
+            return this;
+        }
+
+        public FoxBuilder maxAge(int value){
+            this.maxAge = value;
+            return this;
+        }
+
+        public FoxBuilder breedingProbability(double value){
+            this.breedingProbability = value;
+            return this;
+        }
+
+        public FoxBuilder maxLitterSize(int value){
+            this.maxLitterSize = value;
+            return this;
+        }
+
+        public FoxBuilder randomAge(boolean value){
+            this.randomAge = value;
+            return this;
+        }
+
+        public FoxBuilder rabbitFoodValue(int value){
+            this.rabbitFoodValue = value;
+            return this;
+        }
+
+        public Fox build(){
+            Fox fox = new Fox(randomAge);
+            if(this.breedingAge != null)
+                fox.breedingAge = this.breedingAge;
+            if(this.maxAge != null)
+                fox.maxAge = this.maxAge;
+            if(this.breedingProbability != null)
+                fox.breedingProbability = this.breedingProbability;
+            if(this.maxLitterSize != null)
+                fox.maxLitterSize = this.maxLitterSize;
+            if(this.rabbitFoodValue != null)
+                fox.rabbitFoodValue = this.rabbitFoodValue;
+            return fox;
+        }
+
+
+    }
 
 }

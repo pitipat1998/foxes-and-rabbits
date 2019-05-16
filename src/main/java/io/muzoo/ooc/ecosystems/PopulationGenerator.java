@@ -32,9 +32,9 @@ public class PopulationGenerator {
         field.clear();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                ActorFactory actorFactory = AbstractActorFactory.createRandom();
+                ActorFactory actorFactory = AbstractActorFactory.create();
                 if(actorFactory != null) {
-                    Actor actor = actorFactory.createRandom(row, col);
+                    Actor actor = actorFactory.create(row, col);
                     if (actor != null) {
                         actors.add(actor);
                         field.place(actor, row, col);

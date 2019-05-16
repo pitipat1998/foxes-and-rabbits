@@ -9,11 +9,15 @@ import java.util.List;
 public class Hunter extends Human {
 
     // maximum number of shot
-    private static final int MAXIMUM_SHOTS = 10;
+    private int maximumShots = 10;
+
+    public int getMaximumShots() {
+        return maximumShots;
+    }
 
     @Override
     public void act(Field currentField, Field updatedField, List<Actor> newActors) {
-        for(int shot = 0; shot < MAXIMUM_SHOTS; shot++){
+        for(int shot = 0; shot < maximumShots; shot++){
             Location where = currentField.randomLocation();
             Actor target = currentField.getObjectAt(where);
             if (target != null && target.isActive()){
@@ -29,5 +33,27 @@ public class Hunter extends Human {
             }
     }
 
+    @Override
+    public Human clone() {
+        return new HunterBuilder()
+                .maximumShots(this.getMaximumShots())
+                .build();
+    }
 
+    public static class HunterBuilder {
+        private int maximumShots = 10;
+
+        public HunterBuilder maximumShots(int value){
+            this.maximumShots = value;
+            return this;
+        }
+
+        public Hunter build(){
+            Hunter hunter = new Hunter();
+            hunter.maximumShots = this.maximumShots;
+            return hunter;
+        }
+
+
+    }
 }

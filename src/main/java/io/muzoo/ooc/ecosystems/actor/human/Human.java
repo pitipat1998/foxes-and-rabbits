@@ -28,8 +28,8 @@ public abstract class Human implements Actor {
     }
 
     @Override
-    public void setActive(boolean active) {
+    public void setActive(boolean active) {}
 
-    }
+    public abstract Human clone();
 
 }

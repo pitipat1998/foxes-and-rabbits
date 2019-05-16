@@ -22,7 +22,7 @@ public class AbstractActorFactory {
         }
     };
 
-    public static ActorFactory createRandom(){
+    public static ActorFactory create(){
         double r = rand.nextDouble();
         for (Map.Entry<Class<? extends ActorFactory>, Double> entry :
                 actorFactoryProbabilities.entrySet()) {

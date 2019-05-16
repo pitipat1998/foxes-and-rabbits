@@ -5,8 +5,6 @@ import io.muzoo.ooc.ecosystems.Location;
 
 public abstract class Animal implements Actor {
 
-    protected AnimalFactory animalFactory = AnimalFactory.getInstance();
-
     // Whether the animal is alive or not.
     private boolean alive;
     // The animal's age.
@@ -14,9 +12,17 @@ public abstract class Animal implements Actor {
     // The animal's position
     private Location location;
 
+    private boolean randomAge;
+
     public void initialize(boolean randomAge) {
         setAlive(true);
+        this.randomAge = randomAge;
     }
+
+    public boolean isRandomAge() {
+        return randomAge;
+    }
+
     /**
      * set whether the animal is alive or not.
      * @param alive is animal alive or not
@@ -97,4 +103,7 @@ public abstract class Animal implements Actor {
      * @return The number of births (may be zero).
      */
     protected abstract int breed();
+
+    public abstract Animal clone();
+
 }
