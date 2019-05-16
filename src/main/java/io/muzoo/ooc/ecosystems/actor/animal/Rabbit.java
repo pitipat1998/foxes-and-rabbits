@@ -28,6 +28,10 @@ public class Rabbit extends Animal {
     // A shared random number generator to control breeding.
     private static final Random rand = new Random();
 
+    public Rabbit(boolean randomAge){
+        initialize(randomAge);
+    }
+
     @Override
     public void initialize(boolean randomAge) {
         super.initialize(randomAge);
@@ -51,7 +55,9 @@ public class Rabbit extends Animal {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Rabbit newRabbit = (Rabbit) animalFactory.create(Rabbit.class.getSimpleName(), false, loc);
+//                Rabbit newRabbit = (Rabbit) animalFactory.create(Rabbit.class.getSimpleName(), false, loc);
+                Rabbit newRabbit = new Rabbit(false);
+                newRabbit.setLocation(loc);
                 newActors.add(newRabbit);
                 updatedField.place(newRabbit, loc);
             }

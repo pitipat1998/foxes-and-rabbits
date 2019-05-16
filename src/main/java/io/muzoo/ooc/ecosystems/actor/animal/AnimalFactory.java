@@ -4,6 +4,8 @@ import io.muzoo.ooc.ecosystems.Location;
 import io.muzoo.ooc.ecosystems.actor.Actor;
 import io.muzoo.ooc.ecosystems.actor.ActorFactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,11 +19,11 @@ public class AnimalFactory implements ActorFactory {
     private AnimalFactory() {}
 
     // The probability that a fox will be created in any given grid position.
-    private final double FOX_CREATION_PROBABILITY = 0.04;
+    private static final double FOX_CREATION_PROBABILITY = 0.04;
     // The probability that a rabbit will be created in any given grid position.
-    private final double RABBIT_CREATION_PROBABILITY = 0.10;
+    private static final double RABBIT_CREATION_PROBABILITY = 0.10;
     // The probability that a tiger will be created in any given grid position
-    private final double TIGER_CREATION_PROBABILITY = 0.01;
+    private static final double TIGER_CREATION_PROBABILITY = 0.01;
 
     // Randomizer
     private Random rand = new Random();
@@ -65,13 +67,17 @@ public class AnimalFactory implements ActorFactory {
             if (r < prob) {
                 Animal animal = null;
                 try {
-                    animal = type.newInstance();
-                    animal.initialize(randomAge);
+                    Constructor<?> constructor = type.getConstructor(boolean.class);
+                    animal = (Animal) constructor.newInstance(randomAge);
                     animal.setLocation(row, col);
                 } catch (InstantiationException e1) {
                     e1.printStackTrace();
                 } catch (IllegalAccessException e2) {
                     e2.printStackTrace();
+                } catch (NoSuchMethodException e3) {
+                    e3.printStackTrace();
+                } catch (InvocationTargetException e4){
+                    e4.printStackTrace();
                 }
                 return animal;
             }
@@ -90,12 +96,19 @@ public class AnimalFactory implements ActorFactory {
         Class<? extends Animal> type = registeredAnimals.get(animalType);
         Animal animal = null;
         try {
-            animal = type.newInstance();
-            animal.initialize(randomAge);
+            Constructor<?> constructor = type.getConstructor(boolean.class);
+            animal = (Animal) constructor.newInstance(randomAge);
             animal.setLocation(loc);
+//            animal = type.newInstance();
+//            animal.initialize(randomAge);
+//            animal.setLocation(loc);
         } catch (InstantiationException | IllegalAccessException ex) {
         } catch (NullPointerException npe) {
             System.out.println("Not found animalType: " + animalType);
+        } catch (NoSuchMethodException nsme){
+            nsme.printStackTrace();
+        } catch (InvocationTargetException ite){
+            ite.printStackTrace();
         }
         return animal;
     }

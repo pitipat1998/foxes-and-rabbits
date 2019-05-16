@@ -30,6 +30,9 @@ public class Tiger extends Animal implements Predator{
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
+    public Tiger(boolean randomAge){
+        initialize(randomAge);
+    }
 
     @Override
     public void initialize(boolean randomAge) {
@@ -75,7 +78,9 @@ public class Tiger extends Animal implements Predator{
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Tiger newTiger = (Tiger) animalFactory.create(Tiger.class.getSimpleName(), false, loc);
+//                Tiger newTiger = (Tiger) animalFactory.create(Tiger.class.getSimpleName(), false, loc);
+                Tiger newTiger = new Tiger(false);
+                newTiger.setLocation(loc);
                 newActors.add(newTiger);
                 updatedField.place(newTiger, loc);
             }

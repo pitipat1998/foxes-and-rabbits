@@ -17,7 +17,6 @@ import java.util.Random;
  */
 public class Fox extends Animal implements Predator{
     // Characteristics shared by all foxes (static fields).
-
     // The age at which a fox can start to breed.
     private static final int BREEDING_AGE = 10;
     // The age to which a fox can live.
@@ -36,6 +35,10 @@ public class Fox extends Animal implements Predator{
 
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
+
+    public Fox(boolean randomAge){
+        initialize(randomAge);
+    }
 
     /**
      * Create a fox. A fox can be created as a new born (age zero
@@ -75,7 +78,9 @@ public class Fox extends Animal implements Predator{
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Fox newFox = (Fox) animalFactory.create(Fox.class.getSimpleName(), false, loc);
+//                Fox newFox = (Fox) animalFactory.create(Fox.class.getSimpleName(), false, loc);
+                Fox newFox = new Fox(false);
+                newFox.setLocation(loc);
                 newActors.add(newFox);
                 updatedField.place(newFox, loc);
             }
