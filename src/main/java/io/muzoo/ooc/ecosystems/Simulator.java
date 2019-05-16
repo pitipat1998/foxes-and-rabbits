@@ -40,6 +40,8 @@ public class Simulator {
     private SimulatorView view;
     // A population generator
     private PopulationGenerator populationGenerator;
+    // A list of observers
+    private List<View> observers;
 
     /**
      * Construct a simulation field with default size.
@@ -66,6 +68,7 @@ public class Simulator {
         field = new Field(depth, width);
         updatedField = new Field(depth, width);
         populationGenerator = PopulationGenerator.getInstance();
+        observers = new ArrayList<>();
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
@@ -73,9 +76,34 @@ public class Simulator {
         view.setColor(Rabbit.class, Color.orange);
         view.setColor(Tiger.class, Color.red);
         view.setColor(Hunter.class, Color.magenta);
+        attach(view);
 
         // Setup a valid starting point.
         reset();
+    }
+
+    public void attach(View view){
+        observers.add(view);
+    }
+
+    public void detach(View view){
+        observers.remove(view);
+    }
+
+    private void notifyAllObservers(int step, Field field){
+        Iterator<View> iterator = observers.iterator();
+        while(iterator.hasNext()){
+            Observer observer = iterator.next();
+            observer.update(step, field);
+        }
+    }
+
+    private void displayAllView(){
+        Iterator<View> iterator = observers.iterator();
+        while(iterator.hasNext()){
+            View view = iterator.next();
+            view.showStatus();
+        }
     }
 
     /**
@@ -119,8 +147,10 @@ public class Simulator {
         updatedField = temp;
         updatedField.clear();
 
-        // display the new field on screen
-        view.showStatus(step, field);
+        // update the new field
+        notifyAllObservers(step, field);
+        // display
+        displayAllView();
     }
 
     /**
@@ -133,8 +163,10 @@ public class Simulator {
         updatedField.clear();
         populationGenerator.populate(field, actors);
 
-        // Show the starting state in the view.
-        view.showStatus(step, field);
+        // update
+        notifyAllObservers(step, field);
+        // Show
+        displayAllView();
     }
 
 

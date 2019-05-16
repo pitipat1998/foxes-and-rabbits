@@ -1,7 +1,11 @@
 package io.muzoo.ooc.ecosystems;
 
+import io.muzoo.ooc.ecosystems.Field;
+import io.muzoo.ooc.ecosystems.FieldStats;
+import io.muzoo.ooc.ecosystems.Observer;
+import io.muzoo.ooc.ecosystems.actor.Actor;
+
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.HashMap;
 
@@ -15,7 +19,7 @@ import java.util.HashMap;
  * @author David J. Barnes and Michael Kolling
  * @version 2003.12.22
  */
-public class SimulatorView extends JFrame {
+public class SimulatorView extends JFrame implements Observer, View{
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
 
@@ -56,20 +60,20 @@ public class SimulatorView extends JFrame {
     }
 
     /**
-     * Define a color to be used for a given class of animal.
+     * Define a color to be used for a given class of actor.
      *
-     * @param animalClass The animal's Class object.
+     * @param actorClass The actor's Class object.
      * @param color       The color to be used for the given class.
      */
-    public void setColor(Class animalClass, Color color) {
-        colors.put(animalClass, color);
+    public void setColor(Class actorClass, Color color) {
+        colors.put(actorClass, color);
     }
 
     /**
-     * @return The color to be used for a given class of animal.
+     * @return The color to be used for a given class of actor.
      */
-    private Color getColor(Class animalClass) {
-        Color col = (Color) colors.get(animalClass);
+    private Color getColor(Class actorClass) {
+        Color col = (Color) colors.get(actorClass);
         if (col == null) {
             // no color defined for this class
             return UNKNOWN_COLOR;
@@ -77,17 +81,13 @@ public class SimulatorView extends JFrame {
             return col;
         }
     }
-
-    /**
-     * Show the current status of the field.
+     /**
+     * update the current status of the field.
      *
      * @param step  Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field) {
-        if (!isVisible())
-            setVisible(true);
-
+    public void update(int step, Field field) {
         stepLabel.setText(STEP_PREFIX + step);
         stats.reset();
 
@@ -95,10 +95,10 @@ public class SimulatorView extends JFrame {
 
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if (animal != null) {
-                    stats.incrementCount(animal.getClass());
-                    fieldView.drawMark(col, row, getColor(animal.getClass()));
+                Actor actor = field.getObjectAt(row, col);
+                if (actor != null) {
+                    stats.incrementCount(actor.getClass());
+                    fieldView.drawMark(col, row, getColor(actor.getClass()));
                 } else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);
                 }
@@ -107,6 +107,15 @@ public class SimulatorView extends JFrame {
         stats.countFinished();
 
         population.setText(POPULATION_PREFIX + stats.getPopulationDetails(field));
+    }
+
+    /**
+     * Show the current status of the field.
+     */
+    public void showStatus() {
+        if (!isVisible())
+            setVisible(true);
+
         fieldView.repaint();
     }
 
