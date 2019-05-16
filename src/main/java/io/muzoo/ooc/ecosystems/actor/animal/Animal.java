@@ -5,6 +5,8 @@ import io.muzoo.ooc.ecosystems.Location;
 
 public abstract class Animal implements Actor {
 
+    protected AnimalFactory animalFactory = new AnimalFactory();
+
     // Whether the animal is alive or not.
     private boolean alive;
     // The animal's age.
@@ -42,6 +44,11 @@ public abstract class Animal implements Actor {
     @Override
     public boolean isActive() {
         return isAlive();
+    }
+
+    @Override
+    public void setActive(boolean active){
+        setAlive(active);
     }
 
     protected int getAge() { return age; }

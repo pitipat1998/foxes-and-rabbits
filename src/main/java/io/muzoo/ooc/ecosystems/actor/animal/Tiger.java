@@ -75,7 +75,7 @@ public class Tiger extends Animal implements Predator{
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Tiger newTiger = (Tiger) AnimalFactory.createAnimal(Tiger.class.getSimpleName(), false, loc);
+                Tiger newTiger = (Tiger) animalFactory.create(Tiger.class.getSimpleName(), false, loc);
                 newActors.add(newTiger);
                 updatedField.place(newTiger, loc);
             }
@@ -100,17 +100,17 @@ public class Tiger extends Animal implements Predator{
                 field.adjacentLocations(location);
         while (adjacentLocations.hasNext()) {
             Location where = (Location) adjacentLocations.next();
-            Object animal = field.getObjectAt(where);
-            if (animal instanceof Rabbit) {
-                Rabbit rabbit = (Rabbit) animal;
+            Actor actor = field.getObjectAt(where);
+            if (actor instanceof Rabbit) {
+                Rabbit rabbit = (Rabbit) actor;
                 if (rabbit.isAlive()) {
                     rabbit.setDead();
                     foodLevel = RABBIT_FOOD_VALUE;
                     return where;
                 }
             }
-            else if (animal instanceof Fox) {
-                Fox fox = (Fox) animal;
+            else if (actor instanceof Fox) {
+                Fox fox = (Fox) actor;
                 if (fox.isAlive()) {
                     fox.setDead();
                     foodLevel = FOX_FOOD_VALUE;

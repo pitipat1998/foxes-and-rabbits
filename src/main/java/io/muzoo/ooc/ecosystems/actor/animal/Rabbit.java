@@ -51,7 +51,7 @@ public class Rabbit extends Animal {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Rabbit newRabbit = (Rabbit) AnimalFactory.createAnimal(Rabbit.class.getSimpleName(), false, loc);
+                Rabbit newRabbit = (Rabbit) animalFactory.create(Rabbit.class.getSimpleName(), false, loc);
                 newActors.add(newRabbit);
                 updatedField.place(newRabbit, loc);
             }
@@ -103,7 +103,5 @@ public class Rabbit extends Animal {
     protected boolean canBreed() {
         return getAge() >= BREEDING_AGE;
     }
-
-
 
 }

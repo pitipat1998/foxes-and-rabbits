@@ -1,6 +1,8 @@
 package io.muzoo.ooc.ecosystems;
 
+import io.muzoo.ooc.ecosystems.actor.AbstractActorFactory;
 import io.muzoo.ooc.ecosystems.actor.Actor;
+import io.muzoo.ooc.ecosystems.actor.ActorFactory;
 import io.muzoo.ooc.ecosystems.actor.animal.AnimalFactory;
 
 import java.util.Collections;
@@ -12,10 +14,7 @@ public class PopulationGenerator {
     // Singleton instance of PopulationGenerator
     private static PopulationGenerator populationGenerator = null;
 
-
-    private PopulationGenerator(){
-
-    }
+    private PopulationGenerator(){ }
 
     public static PopulationGenerator getInstance(){
         if(null == populationGenerator) {
@@ -33,10 +32,13 @@ public class PopulationGenerator {
         field.clear();
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
-                Actor actor = AnimalFactory.createRandomAnimal(true, row, col);
-                if (actor != null){
-                    actors.add(actor);
-                    field.place(actor, row, col);
+                ActorFactory actorFactory = AbstractActorFactory.createRandom();
+                if(actorFactory != null) {
+                    Actor actor = actorFactory.createRandom(row, col);
+                    if (actor != null) {
+                        actors.add(actor);
+                        field.place(actor, row, col);
+                    }
                 }
                 // else leave the location empty.
             }

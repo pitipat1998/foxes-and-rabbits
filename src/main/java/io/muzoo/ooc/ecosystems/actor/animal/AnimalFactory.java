@@ -1,25 +1,30 @@
 package io.muzoo.ooc.ecosystems.actor.animal;
 
 import io.muzoo.ooc.ecosystems.Location;
+import io.muzoo.ooc.ecosystems.actor.Actor;
+import io.muzoo.ooc.ecosystems.actor.ActorFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class AnimalFactory {
+public class AnimalFactory implements ActorFactory {
+
+    // singleton object
+    private static AnimalFactory animalFactory = null;
 
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.04;
+    private final double FOX_CREATION_PROBABILITY = 0.04;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.10;
+    private final double RABBIT_CREATION_PROBABILITY = 0.10;
     // The probability that a tiger will be created in any given grid position
-    private static final double TIGER_CREATION_PROBABILITY = 0.01;
+    private final double TIGER_CREATION_PROBABILITY = 0.01;
 
     // Randomizer
-    private static Random rand = new Random();
+    private Random rand = new Random();
     // Map of all animals
-    private static Map<Class<? extends Animal>, Double> animalProbabilities
+    private Map<Class<? extends Animal>, Double> animalProbabilities
             = new LinkedHashMap<Class<? extends Animal>, Double>() {
         {
             put(Rabbit.class, RABBIT_CREATION_PROBABILITY);
@@ -28,7 +33,7 @@ public class AnimalFactory {
         }
     };
 
-    private static Map<String, Class<? extends Animal>> registeredAnimals
+    private Map<String, Class<? extends Animal>> registeredAnimals
             = new HashMap<String, Class<? extends Animal>>() {
         {
             put(Rabbit.class.getSimpleName(), Rabbit.class);
@@ -37,7 +42,19 @@ public class AnimalFactory {
         }
     };
 
-    public static Animal createRandomAnimal(boolean randomAge, int row, int col){
+    public static AnimalFactory getInstance(){
+        if (animalFactory == null){
+            return new AnimalFactory();
+        }
+        return animalFactory;
+    }
+
+    @Override
+    public Actor createRandom(int row, int col) {
+        return createRandom(true, row, col);
+    }
+
+    public Animal createRandom(boolean randomAge, int row, int col){
         double r = rand.nextDouble();
         for (Map.Entry<Class<? extends Animal>, Double> entry :
                 animalProbabilities.entrySet()) {
@@ -62,7 +79,12 @@ public class AnimalFactory {
         return null;
     }
 
-    public static Animal createAnimal(String animalType, boolean randomAge, Location loc){
+    @Override
+    public Actor create(String type, Location loc) {
+        return create(type, false, loc);
+    }
+
+    public Animal create(String animalType, boolean randomAge, Location loc){
         Class<? extends Animal> type = registeredAnimals.get(animalType);
         Animal animal = null;
         try {

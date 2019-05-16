@@ -92,6 +92,22 @@ public class Field {
         return field[row][col];
     }
 
+
+    /**
+     * Generate a random location that is adjacent to the
+     * given location, or is the same location.
+     * The returned location will be within the valid bounds
+     * of the field.
+     *
+     * @return A valid location within the grid area. This
+     * may be the same object as the location parameter.
+     */
+    public Location randomLocation() {
+        int nextRow = rand.nextInt(depth);
+        int nextCol = rand.nextInt(width);
+        return new Location(nextRow, nextCol);
+    }
+
     /**
      * Generate a random location that is adjacent to the
      * given location, or is the same location.

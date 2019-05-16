@@ -19,4 +19,10 @@ public interface Actor {
      * @return true if still, false if not
      */
     boolean isActive();
+
+    /**
+     *  set activeness of the actor
+     * @param active activeness
+     */
+    void setActive(boolean active);
 }
