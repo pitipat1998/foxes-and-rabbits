@@ -14,8 +14,8 @@ public abstract class Animal implements Actor {
 
     private boolean randomAge;
 
-    public void initialize(boolean randomAge) {
-        setAlive(true);
+    protected Animal(boolean randomAge){
+        this.alive = true;
         this.randomAge = randomAge;
     }
 

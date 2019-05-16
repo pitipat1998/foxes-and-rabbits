@@ -28,8 +28,12 @@ public class Rabbit extends Animal {
     // A shared random number generator to control breeding.
     private static final Random rand = new Random();
 
-    public Rabbit(boolean randomAge){
-        initialize(randomAge);
+    private Rabbit(boolean randomAge){
+        super(randomAge);
+        setAge(0);
+        if (randomAge) {
+            setAge(rand.nextInt(maxAge));
+        }
     }
 
     public int getBreedingAge() {
@@ -46,15 +50,6 @@ public class Rabbit extends Animal {
 
     public int getMaxLitterSize() {
         return maxLitterSize;
-    }
-
-    @Override
-    public void initialize(boolean randomAge) {
-        super.initialize(randomAge);
-        setAge(0);
-        if (randomAge) {
-            setAge(rand.nextInt(maxAge));
-        }
     }
 
     /**

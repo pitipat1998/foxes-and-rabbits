@@ -37,8 +37,16 @@ public class Fox extends Animal implements Predator {
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
-    public Fox(boolean randomAge){
-        initialize(randomAge);
+    private Fox(boolean randomAge){
+        super(randomAge);
+        setAge(0);
+        if (randomAge) {
+            setAge(rand.nextInt(maxAge));
+            foodLevel = rand.nextInt(rabbitFoodValue);
+        } else {
+            // leave age at 0
+            foodLevel = rabbitFoodValue;
+        }
     }
 
     public int getBreedingAge() {
@@ -59,25 +67,6 @@ public class Fox extends Animal implements Predator {
 
     public int getRabbitFoodValue() {
         return rabbitFoodValue;
-    }
-
-    /**
-     * Create a fox. A fox can be created as a new born (age zero
-     * and not hungry) or with random age.
-     *
-     * @param randomAge If true, the fox will have random age and hunger level.
-     */
-    @Override
-    public void initialize(boolean randomAge) {
-        super.initialize(randomAge);
-        setAge(0);
-        if (randomAge) {
-            setAge(rand.nextInt(maxAge));
-            foodLevel = rand.nextInt(rabbitFoodValue);
-        } else {
-            // leave age at 0
-            foodLevel = rabbitFoodValue;
-        }
     }
 
     /**

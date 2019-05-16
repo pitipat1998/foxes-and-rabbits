@@ -30,8 +30,16 @@ public class Tiger extends Animal implements Predator{
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
-    public Tiger(boolean randomAge){
-        initialize(randomAge);
+    private Tiger(boolean randomAge){
+        super(randomAge);
+        int foodIdx = rand.nextInt(foods.length);
+        if (randomAge) {
+            setAge(rand.nextInt(maxAge));
+            foodLevel = rand.nextInt(foods[foodIdx]);
+        } else {
+            // leave age at 0
+            foodLevel = foods[foodIdx];
+        }
     }
 
     public int getBreedingAge() {
@@ -56,19 +64,6 @@ public class Tiger extends Animal implements Predator{
 
     public int getFoxFoodValue() {
         return foxFoodValue;
-    }
-
-    @Override
-    public void initialize(boolean randomAge) {
-        super.initialize(randomAge);
-        int foodIdx = rand.nextInt(foods.length);
-        if (randomAge) {
-            setAge(rand.nextInt(maxAge));
-            foodLevel = rand.nextInt(foods[foodIdx]);
-        } else {
-            // leave age at 0
-            foodLevel = foods[foodIdx];
-        }
     }
 
     @Override
