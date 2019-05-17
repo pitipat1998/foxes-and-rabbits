@@ -15,41 +15,18 @@ import java.util.Random;
  * @version 2002.10.28
  */
 public class Rabbit extends Animal {
-    // Characteristics shared by all rabbits (static fields).
-
-    // The age at which a rabbit can start to breed.
-    private int breedingAge = 5;
-    // The age to which a rabbit can live.
-    private int maxAge = 50;
-    // The likelihood of a rabbit breeding.
-    private double breedingProbability = 0.15;
-    // The maximum number of births.
-    private int maxLitterSize = 5;
-    // A shared random number generator to control breeding.
-    private static final Random rand = new Random();
 
     private Rabbit(boolean randomAge){
         super(randomAge);
+
+    }
+
+    @Override
+    protected void initialize(){
         setAge(0);
-        if (randomAge) {
-            setAge(rand.nextInt(maxAge));
+        if (isRandomAge()) {
+            setAge(rand.nextInt(getMaxAge()));
         }
-    }
-
-    public int getBreedingAge() {
-        return breedingAge;
-    }
-
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    public double getBreedingProbability() {
-        return breedingProbability;
-    }
-
-    public int getMaxLitterSize() {
-        return maxLitterSize;
     }
 
     /**
@@ -90,7 +67,7 @@ public class Rabbit extends Animal {
     @Override
     protected void incrementAge() {
         setAge(getAge()+1);
-        if (getAge() > maxAge) {
+        if (getAge() > getMaxAge()) {
             setAlive(false);
         }
     }
@@ -104,8 +81,8 @@ public class Rabbit extends Animal {
     @Override
     protected int breed() {
         int births = 0;
-        if (canBreed() && rand.nextDouble() <= breedingProbability) {
-            births = rand.nextInt(maxLitterSize) + 1;
+        if (canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
         }
         return births;
     }
@@ -117,7 +94,7 @@ public class Rabbit extends Animal {
      */
     @Override
     protected boolean canBreed() {
-        return getAge() >= breedingAge;
+        return getAge() >= getBreedingAge();
     }
 
     @Override
@@ -130,52 +107,27 @@ public class Rabbit extends Animal {
                 .build();
     }
 
-    public static class RabbitBuilder {
-        private Integer breedingAge;
-        private Integer maxAge;
-        private Double breedingProbability;
-        private Integer maxLitterSize;
-        private boolean randomAge;
+    public static class RabbitBuilder extends AnimalBuilder<RabbitBuilder>{
 
         public RabbitBuilder(boolean randomAge){
-            this.randomAge = randomAge;
+            super(randomAge);
+            breedingAge(5);
+            maxAge(50);
+            breedingProbability(0.15);
+            maxLitterSize(5);
         }
 
-        public RabbitBuilder breedingAge(int value){
-            this.breedingAge = value;
-            return this;
-        }
-
-        public RabbitBuilder maxAge(int value){
-            this.maxAge = value;
-            return this;
-        }
-
-        public RabbitBuilder breedingProbability(double value){
-            this.breedingProbability = value;
-            return this;
-        }
-
-        public RabbitBuilder maxLitterSize(int value){
-            this.maxLitterSize = value;
-            return this;
-        }
-
-        public RabbitBuilder randomAge(boolean value){
-            this.randomAge = value;
+        @Override
+        protected RabbitBuilder self(){
             return this;
         }
 
         public Rabbit build(){
-            Rabbit rabbit = new Rabbit(randomAge);
-            if(this.breedingAge != null)
-                rabbit.breedingAge = this.breedingAge;
-            if(this.maxAge != null)
-                rabbit.maxAge = this.maxAge;
-            if(this.breedingProbability != null)
-                rabbit.breedingProbability = this.breedingProbability;
-            if(this.maxLitterSize != null)
-                rabbit.maxLitterSize = this.maxLitterSize;
+            Rabbit rabbit = new Rabbit(this.isRandomAge());
+            rabbit.setBreedingAge(this.getBreedingAge());
+            rabbit.setMaxAge(this.getMaxAge());
+            rabbit.setBreedingProbability(this.getBreedingProbability());
+            rabbit.setMaxLitterSize(this.getMaxLitterSize());
             return rabbit;
         }
 

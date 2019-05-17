@@ -12,11 +12,11 @@ public class AnimalFactory implements ActorFactory {
     private static AnimalFactory animalFactory = null;
 
     // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.04;
+    private static final double FOX_CREATION_PROBABILITY = 0.05;
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.10;
     // The probability that a tiger will be created in any given grid position
-    private static final double TIGER_CREATION_PROBABILITY = 0.01;
+    private static final double TIGER_CREATION_PROBABILITY = 0.03;
 
     private AnimalFactory() {}
 
