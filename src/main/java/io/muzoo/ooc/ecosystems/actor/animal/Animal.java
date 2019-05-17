@@ -91,7 +91,16 @@ public abstract class Animal implements Actor {
 
     protected abstract void initialize();
 
-    protected abstract void incrementAge();
+    /**
+     * Increase the age.
+     * This could result in the rabbit's death.
+     */
+    protected void incrementAge() {
+        setAge(getAge()+1);
+        if (getAge() > getMaxAge()) {
+            setAlive(false);
+        }
+    }
 
     /**
      * get location of the animal
@@ -122,9 +131,13 @@ public abstract class Animal implements Actor {
     }
 
     /**
-     * A animal can breed if it has reached the breeding age.
+     * A rabbit can breed if it has reached the breeding age.
+     *
+     * @return true if the rabbit can breed, false otherwise.
      */
-    protected abstract boolean canBreed();
+    protected boolean canBreed() {
+        return getAge() >= getBreedingAge();
+    }
 
     /**
      * Generate a number representing the number of births,
@@ -132,7 +145,13 @@ public abstract class Animal implements Actor {
      *
      * @return The number of births (may be zero).
      */
-    protected abstract int breed();
+    protected int breed() {
+        int births = 0;
+        if (canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
+        }
+        return births;
+    }
 
     public abstract Animal clone();
 

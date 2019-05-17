@@ -45,28 +45,6 @@ public class Tiger extends Animal implements Predator{
     }
 
     @Override
-    protected void incrementAge() {
-        setAge(getAge()+1);
-        if (getAge() > getMaxAge()) {
-            setAlive(false);
-        }
-    }
-
-    @Override
-    protected boolean canBreed() {
-        return getAge() >= getBreedingAge();
-    }
-
-    @Override
-    protected int breed() {
-        int births = 0;
-        if (canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    @Override
     public void act(Field currentField, Field updatedField, List<Actor> newActors) {
         incrementAge();
         incrementHunger();

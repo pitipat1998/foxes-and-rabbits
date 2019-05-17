@@ -88,16 +88,6 @@ public class Fox extends Animal implements Predator {
     }
 
     /**
-     * Increase the age. This could result in the fox's death.
-     */
-    protected void incrementAge() {
-        setAge(getAge()+1);
-        if (getAge() > getMaxAge()) {
-            setAlive(false);
-        }
-    }
-
-    /**
      * Make this fox more hungry. This could result in the fox's death.
      */
     public void incrementHunger() {
@@ -130,20 +120,6 @@ public class Fox extends Animal implements Predator {
             }
         }
         return null;
-    }
-
-    @Override
-    protected boolean canBreed() {
-        return getAge() >= getBreedingAge();
-    }
-
-    @Override
-    protected int breed() {
-        int births = 0;
-        if (canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
     }
 
     @Override

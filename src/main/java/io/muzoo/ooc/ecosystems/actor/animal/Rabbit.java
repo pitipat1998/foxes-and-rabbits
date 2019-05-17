@@ -60,43 +60,6 @@ public class Rabbit extends Animal {
         }
     }
 
-    /**
-     * Increase the age.
-     * This could result in the rabbit's death.
-     */
-    @Override
-    protected void incrementAge() {
-        setAge(getAge()+1);
-        if (getAge() > getMaxAge()) {
-            setAlive(false);
-        }
-    }
-
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     *
-     * @return The number of births (may be zero).
-     */
-    @Override
-    protected int breed() {
-        int births = 0;
-        if (canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    /**
-     * A rabbit can breed if it has reached the breeding age.
-     *
-     * @return true if the rabbit can breed, false otherwise.
-     */
-    @Override
-    protected boolean canBreed() {
-        return getAge() >= getBreedingAge();
-    }
-
     @Override
     public Animal clone() {
         return new RabbitBuilder(this.isRandomAge())
