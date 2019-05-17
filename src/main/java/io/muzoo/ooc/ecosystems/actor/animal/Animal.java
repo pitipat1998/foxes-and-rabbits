@@ -5,7 +5,7 @@ import io.muzoo.ooc.ecosystems.Location;
 
 import java.util.Random;
 
-public abstract class Animal implements Actor {
+public abstract class Animal<T extends Animal<T>> implements Actor {
 
     // The age at which a animal can start to breed.
     private int breedingAge;
@@ -153,7 +153,7 @@ public abstract class Animal implements Actor {
         return births;
     }
 
-    public abstract Animal clone();
+    public abstract T clone();
 
     public abstract static class AnimalBuilder<T extends AnimalBuilder<T>> {
         private Integer breedingAge;
@@ -193,11 +193,6 @@ public abstract class Animal implements Actor {
 
         public T maxLitterSize(int value){
             this.maxLitterSize = value;
-            return self();
-        }
-
-        public T randomAge(boolean value){
-            this.randomAge = value;
             return self();
         }
 

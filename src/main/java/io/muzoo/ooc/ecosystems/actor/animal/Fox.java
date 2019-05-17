@@ -6,7 +6,6 @@ import io.muzoo.ooc.ecosystems.Location;
 
 import java.util.List;
 import java.util.Iterator;
-import java.util.Random;
 
 /**
  * A simple model of a fox.
@@ -15,7 +14,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Fox extends Animal implements Predator {
+public class Fox extends Animal<Fox> implements Predator {
 
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
@@ -67,7 +66,7 @@ public class Fox extends Animal implements Predator {
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
 //                Fox newFox = (Fox) animalFactory.create(Fox.class.getSimpleName(), false, loc);
-                Fox newFox = (Fox) this.clone();
+                Fox newFox = this.clone();
                 newFox.setLocation(loc);
                 newActors.add(newFox);
                 updatedField.place(newFox, loc);
@@ -123,7 +122,7 @@ public class Fox extends Animal implements Predator {
     }
 
     @Override
-    public Animal clone() {
+    public Fox clone() {
         return new FoxBuilder(this.isRandomAge())
                 .breedingAge(this.getBreedingAge())
                 .maxAge(this.getMaxAge())

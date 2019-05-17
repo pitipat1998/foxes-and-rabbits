@@ -5,7 +5,6 @@ import io.muzoo.ooc.ecosystems.Field;
 import io.muzoo.ooc.ecosystems.Location;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * A simple model of a rabbit.
@@ -14,7 +13,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kolling
  * @version 2002.10.28
  */
-public class Rabbit extends Animal {
+public class Rabbit extends Animal<Rabbit> {
 
     private Rabbit(boolean randomAge){
         super(randomAge);
@@ -43,7 +42,7 @@ public class Rabbit extends Animal {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Rabbit newRabbit = (Rabbit) this.clone();
+                Rabbit newRabbit = this.clone();
                 newRabbit.setLocation(loc);
                 newActors.add(newRabbit);
                 updatedField.place(newRabbit, loc);
@@ -61,7 +60,7 @@ public class Rabbit extends Animal {
     }
 
     @Override
-    public Animal clone() {
+    public Rabbit clone() {
         return new RabbitBuilder(this.isRandomAge())
                 .breedingAge(this.getBreedingAge())
                 .maxAge(this.getMaxAge())

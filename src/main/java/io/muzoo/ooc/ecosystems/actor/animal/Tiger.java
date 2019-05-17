@@ -7,7 +7,7 @@ import io.muzoo.ooc.ecosystems.actor.Actor;
 import java.util.Iterator;
 import java.util.List;
 
-public class Tiger extends Animal implements Predator{
+public class Tiger extends Animal<Tiger> implements Predator{
 
     // The food value of a single rabbit. In effect, this is the
     // number of steps a tiger can go before it has to eat again.
@@ -53,8 +53,7 @@ public class Tiger extends Animal implements Predator{
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-//                Tiger newTiger = (Tiger) animalFactory.create(Tiger.class.getSimpleName(), false, loc);
-                Tiger newTiger = new Tiger(false);
+                Tiger newTiger = this.clone();
                 newTiger.setLocation(loc);
                 newActors.add(newTiger);
                 updatedField.place(newTiger, loc);
@@ -110,7 +109,7 @@ public class Tiger extends Animal implements Predator{
     }
 
     @Override
-    public Animal clone() {
+    public Tiger clone() {
         return new TigerBuilder(this.isRandomAge())
                 .breedingAge(this.getBreedingAge())
                 .maxAge(this.getMaxAge())
@@ -129,7 +128,7 @@ public class Tiger extends Animal implements Predator{
             super(randomAge);
             breedingAge(50);
             maxAge(150);
-            breedingProbability(0.4);
+            breedingProbability(0.1);
             maxLitterSize(2);
             rabbitFoodValue = 4;
             foxFoodValue = 6;
