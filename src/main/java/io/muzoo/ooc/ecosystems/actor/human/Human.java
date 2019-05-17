@@ -3,7 +3,7 @@ package io.muzoo.ooc.ecosystems.actor.human;
 import io.muzoo.ooc.ecosystems.Location;
 import io.muzoo.ooc.ecosystems.actor.Actor;
 
-public abstract class Human implements Actor {
+public abstract class Human<T extends Human> implements Actor {
 
     // Whether the animal is alive or not.
     private boolean alive = true;
@@ -30,6 +30,6 @@ public abstract class Human implements Actor {
     @Override
     public void setActive(boolean active) {}
 
-    public abstract Human clone();
+    public abstract T clone();
 
 }

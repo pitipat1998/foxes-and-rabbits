@@ -6,7 +6,7 @@ import io.muzoo.ooc.ecosystems.actor.Actor;
 
 import java.util.List;
 
-public class Hunter extends Human {
+public class Hunter extends Human<Hunter> {
 
     // maximum number of shot
     private int maximumShots = 10;
@@ -34,7 +34,7 @@ public class Hunter extends Human {
     }
 
     @Override
-    public Human clone() {
+    public Hunter clone() {
         return new HunterBuilder()
                 .maximumShots(this.getMaximumShots())
                 .build();
