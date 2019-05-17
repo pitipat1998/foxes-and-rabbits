@@ -9,6 +9,8 @@ package io.muzoo.ooc.ecosystems.actor.animal;
  */
 public class Rabbit extends Animal<Rabbit> {
 
+    private Rabbit(){ super(); }
+
     @Override
     public void incrementHunger() { }
 

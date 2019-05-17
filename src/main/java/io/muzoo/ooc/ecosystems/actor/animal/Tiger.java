@@ -2,6 +2,8 @@ package io.muzoo.ooc.ecosystems.actor.animal;
 
 public class Tiger extends Animal<Tiger> {
 
+    private Tiger() { super(); }
+
     @Override
     public Tiger clone() {
         return new TigerBuilder(this.isRandomAge())

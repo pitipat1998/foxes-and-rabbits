@@ -9,6 +9,8 @@ package io.muzoo.ooc.ecosystems.actor.animal;
  */
 public class Fox extends Animal<Fox> {
 
+    private Fox(){ super(); }
+
     @Override
     public Fox clone() {
         return new FoxBuilder(this.isRandomAge())
