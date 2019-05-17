@@ -1,11 +1,5 @@
 package io.muzoo.ooc.ecosystems.actor.animal;
 
-import io.muzoo.ooc.ecosystems.actor.Actor;
-import io.muzoo.ooc.ecosystems.Field;
-import io.muzoo.ooc.ecosystems.Location;
-
-import java.util.List;
-
 /**
  * A simple model of a rabbit.
  * Rabbits age, move, breed, and die.
@@ -15,49 +9,8 @@ import java.util.List;
  */
 public class Rabbit extends Animal<Rabbit> {
 
-    private Rabbit(boolean randomAge){
-        super(randomAge);
-
-    }
-
     @Override
-    protected void initialize(){
-        setAge(0);
-        if (isRandomAge()) {
-            setAge(rand.nextInt(getMaxAge()));
-        }
-    }
-
-    /**
-     * This is what the rabbit does most of the time - it runs
-     * around. Sometimes it will breed or die of old age.
-     *
-     * @param updatedField The field to transfer to.
-     * @param newActors   A list to add newly born rabbits to.
-     */
-    @Override
-    public void act(Field currentField, Field updatedField, List<Actor> newActors) {
-        incrementAge();
-        if (isAlive()) {
-            int births = breed();
-            for (int b = 0; b < births; b++) {
-                Location loc = updatedField.randomAdjacentLocation(getLocation());
-                Rabbit newRabbit = this.clone();
-                newRabbit.setLocation(loc);
-                newActors.add(newRabbit);
-                updatedField.place(newRabbit, loc);
-            }
-            Location newLocation = updatedField.freeAdjacentLocation(getLocation());
-            // Only transfer to the updated field if there was a free location
-            if (newLocation != null) {
-                setLocation(newLocation);
-                updatedField.place(this, newLocation);
-            } else {
-                // can neither move nor stay - overcrowding - all locations taken
-                setAlive(false);
-            }
-        }
-    }
+    public void incrementHunger() { }
 
     @Override
     public Rabbit clone() {
@@ -66,6 +19,7 @@ public class Rabbit extends Animal<Rabbit> {
                 .maxAge(this.getMaxAge())
                 .breedingProbability(this.getBreedingProbability())
                 .maxLitterSize(this.getMaxLitterSize())
+                .foods(this.getFoods())
                 .build();
     }
 
@@ -85,11 +39,13 @@ public class Rabbit extends Animal<Rabbit> {
         }
 
         public Rabbit build(){
-            Rabbit rabbit = new Rabbit(this.isRandomAge());
+            Rabbit rabbit = new Rabbit();
+            rabbit.setRandomAge(this.isRandomAge());
             rabbit.setBreedingAge(this.getBreedingAge());
             rabbit.setMaxAge(this.getMaxAge());
             rabbit.setBreedingProbability(this.getBreedingProbability());
             rabbit.setMaxLitterSize(this.getMaxLitterSize());
+            rabbit.setFoods(this.getFoods());
             return rabbit;
         }
 
