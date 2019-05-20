@@ -22,17 +22,11 @@ public class Fox extends Animal<Fox> {
                 .build();
     }
 
-    public static class FoxBuilder extends AnimalBuilder<FoxBuilder> {
+    public static class FoxBuilder extends AnimalBuilder<FoxBuilder, Fox> {
 
         public FoxBuilder(boolean randomAge){
             super(randomAge);
-            breedingAge(30);
-            maxAge(150);
-            breedingProbability(0.2);
-            maxLitterSize(3);
-            addFoods(Rabbit.class, 4);
         }
-
 
         @Override
         protected FoxBuilder self(){
@@ -41,13 +35,7 @@ public class Fox extends Animal<Fox> {
 
         public Fox build(){
             Fox fox = new Fox();
-            fox.setRandomAge(this.isRandomAge());
-            fox.setBreedingAge(this.getBreedingAge());
-            fox.setMaxAge(this.getMaxAge());
-            fox.setBreedingProbability(this.getBreedingProbability());
-            fox.setMaxLitterSize(this.getMaxLitterSize());
-            fox.setFoods(this.getFoods());
-            fox.initialize();
+            buildAnimal(fox);
             return fox;
         }
 

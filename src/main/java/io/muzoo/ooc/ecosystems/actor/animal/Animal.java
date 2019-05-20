@@ -29,10 +29,11 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
 
     private boolean randomAge;
     // A shared random number generator to control breeding.
-    protected static final Random rand = new Random();
+    private static final Random rand = new Random();
 
     protected Animal(){
         this.alive = true;
+        foods = new HashMap<>();
     }
 
     public int getBreedingAge() { return breedingAge; }
@@ -99,9 +100,9 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
         setAlive(active);
     }
 
-    protected int getAge() { return age; }
+    public int getAge() { return age; }
 
-    protected void setAge(int age) { this.age = age; }
+    public void setAge(int age) { this.age = age; }
 
     /**
      * Set the animal's location.
@@ -127,20 +128,25 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
      *
      * @return location of the animal
      */
-    protected Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 
     protected void initialize(){
-        List<Integer> foods = new ArrayList<>(getFoods().values());
-        int foodIdx = rand.nextInt(foods.size());
-        setAge(0);
-        if (isRandomAge()){
+
+        if (isRandomAge())
             setAge(rand.nextInt(getMaxAge()));
-            setFoodLevel(rand.nextInt(foods.get(foodIdx)));
-        } else {
-            // leave age at 0
-            setFoodLevel(foods.get(foodIdx));
+        else
+            setAge(0);
+
+        if (foods.size() > 0) {
+            List<Integer> foodlist = new ArrayList<>(getFoods().values());
+            int foodIdx = rand.nextInt(foodlist.size());
+            if (isRandomAge()) {
+                setFoodLevel(rand.nextInt(foodlist.get(foodIdx)));
+            } else {
+                setFoodLevel(foodlist.get(foodIdx));
+            }
         }
     }
 
@@ -181,7 +187,7 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
     /**
      * Make this fox more hungry. This could result in the fox's death.
      */
-    public void incrementHunger() {
+    protected void incrementHunger() {
         foodLevel--;
         if (foodLevel <= 0) {
             setAlive(false);
@@ -197,7 +203,7 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
             int births = breed();
             for (int b = 0; b < births; b++) {
                 Location loc = updatedField.randomAdjacentLocation(getLocation());
-                T newAnimal = this.clone();
+                Animal newAnimal = this.clone();
                 newAnimal.setLocation(loc);
                 newActors.add(newAnimal);
                 updatedField.place(newAnimal, loc);
@@ -216,8 +222,6 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
             }
         }
     }
-
-
 
     /**
      * Tell the animal to look for rabbits adjacent to its current location.
@@ -250,7 +254,8 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
 
     public abstract T clone();
 
-    public abstract static class AnimalBuilder<T extends AnimalBuilder<T>> {
+
+    public abstract static class AnimalBuilder<A extends AnimalBuilder<A, B>, B extends Animal<B>> {
         private Integer breedingAge;
         private Integer maxAge;
         private Double breedingProbability;
@@ -275,37 +280,50 @@ public abstract class Animal<T extends Animal<T>> implements Actor {
             foods = new HashMap<>();
         }
 
-        public T breedingAge(int value){
+        public A breedingAge(int value){
             this.breedingAge = value;
             return self();
         }
 
-        public T maxAge(int value){
+        public A maxAge(int value){
             this.maxAge = value;
             return self();
         }
 
-        public T breedingProbability(double value){
+        public A breedingProbability(double value){
             this.breedingProbability = value;
             return self();
         }
 
-        public T maxLitterSize(int value){
+        public A maxLitterSize(int value){
             this.maxLitterSize = value;
             return self();
         }
 
-        public T foods(Map<String, Integer> map){
+        public A foods(Map<String, Integer> map){
             this.foods = map;
             return self();
         }
 
-        public T addFoods(Class<? extends Animal> animal, int foodValue){
+        public A addFoods(Class<? extends io.muzoo.ooc.ecosystems.actor.animal.Animal> animal, int foodValue){
             this.foods.put(animal.getSimpleName(), foodValue);
             return self();
         }
 
-        protected abstract T self();
+        protected abstract A self();
+
+        protected void buildAnimal(Animal animal){
+            animal.setRandomAge(this.isRandomAge());
+            animal.setBreedingAge(this.getBreedingAge());
+            animal.setMaxAge(this.getMaxAge());
+            animal.setBreedingProbability(this.getBreedingProbability());
+            animal.setMaxLitterSize(this.getMaxLitterSize());
+            animal.setFoods(this.getFoods());
+            animal.initialize();
+        }
+
+        public abstract B build();
+
 
     }
 

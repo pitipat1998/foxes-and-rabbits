@@ -1,8 +1,5 @@
 package io.muzoo.ooc.ecosystems;
 
-import io.muzoo.ooc.ecosystems.Field;
-import io.muzoo.ooc.ecosystems.FieldStats;
-import io.muzoo.ooc.ecosystems.Observer;
 import io.muzoo.ooc.ecosystems.actor.Actor;
 
 import java.awt.*;
@@ -19,7 +16,7 @@ import java.util.HashMap;
  * @author David J. Barnes and Michael Kolling
  * @version 2003.12.22
  */
-public class SimulatorView extends JFrame implements Observer, View{
+public class SimulatorView extends JFrame implements Observer{
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
 
@@ -107,6 +104,7 @@ public class SimulatorView extends JFrame implements Observer, View{
         stats.countFinished();
 
         population.setText(POPULATION_PREFIX + stats.getPopulationDetails(field));
+        showStatus();
     }
 
     /**

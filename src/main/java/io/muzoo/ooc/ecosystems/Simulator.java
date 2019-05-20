@@ -41,7 +41,7 @@ public class Simulator {
     // A population generator
     private PopulationGenerator populationGenerator;
     // A list of observers
-    private List<View> observers;
+    private List<Observer> observers;
 
     /**
      * Construct a simulation field with default size.
@@ -82,27 +82,19 @@ public class Simulator {
         reset();
     }
 
-    public void attach(View view){
-        observers.add(view);
+    public void attach(Observer observer){
+        observers.add(observer);
     }
 
-    public void detach(View view){
-        observers.remove(view);
+    public void detach(Observer observer){
+        observers.remove(observer);
     }
 
     private void notifyAllObservers(int step, Field field){
-        Iterator<View> iterator = observers.iterator();
+        Iterator<Observer> iterator = observers.iterator();
         while(iterator.hasNext()){
             Observer observer = iterator.next();
             observer.update(step, field);
-        }
-    }
-
-    private void displayAllView(){
-        Iterator<View> iterator = observers.iterator();
-        while(iterator.hasNext()){
-            View view = iterator.next();
-            view.showStatus();
         }
     }
 
@@ -149,8 +141,6 @@ public class Simulator {
 
         // update the new field
         notifyAllObservers(step, field);
-        // display
-        displayAllView();
     }
 
     /**
@@ -165,8 +155,6 @@ public class Simulator {
 
         // update
         notifyAllObservers(step, field);
-        // Show
-        displayAllView();
     }
 
 

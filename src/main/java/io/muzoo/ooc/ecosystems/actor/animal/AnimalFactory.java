@@ -28,9 +28,27 @@ public class AnimalFactory implements ActorFactory {
     }
 
 
-    private Rabbit rabbit = new Rabbit.RabbitBuilder(true).build();
-    private Fox fox = new Fox.FoxBuilder(true).build();
-    private Tiger tiger = new Tiger.TigerBuilder(true).build();
+    private Rabbit rabbit = new Rabbit.RabbitBuilder(true)
+                                .breedingAge(5)
+                                .maxAge(50)
+                                .breedingProbability(0.15)
+                                .maxLitterSize(5)
+                                .build();
+    private Fox fox = new Fox.FoxBuilder(true)
+                            .breedingAge(30)
+                            .maxAge(150)
+                            .breedingProbability(0.2)
+                            .maxLitterSize(3)
+                            .addFoods(Rabbit.class, 4)
+                            .build();
+    private Tiger tiger = new Tiger.TigerBuilder(true)
+                                    .breedingAge(50)
+                                    .maxAge(150)
+                                    .breedingProbability(0.15)
+                                    .maxLitterSize(2)
+                                    .addFoods(Rabbit.class, 4)
+                                    .addFoods(Fox.class, 4)
+                                    .build();
 
     // Randomizer
     private Random rand = new Random();

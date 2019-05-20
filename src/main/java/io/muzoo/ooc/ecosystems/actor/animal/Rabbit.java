@@ -25,14 +25,10 @@ public class Rabbit extends Animal<Rabbit> {
                 .build();
     }
 
-    public static class RabbitBuilder extends AnimalBuilder<RabbitBuilder>{
+    public static class RabbitBuilder extends AnimalBuilder<RabbitBuilder, Rabbit>{
 
         public RabbitBuilder(boolean randomAge){
             super(randomAge);
-            breedingAge(5);
-            maxAge(50);
-            breedingProbability(0.15);
-            maxLitterSize(5);
         }
 
         @Override
@@ -42,16 +38,9 @@ public class Rabbit extends Animal<Rabbit> {
 
         public Rabbit build(){
             Rabbit rabbit = new Rabbit();
-            rabbit.setRandomAge(this.isRandomAge());
-            rabbit.setBreedingAge(this.getBreedingAge());
-            rabbit.setMaxAge(this.getMaxAge());
-            rabbit.setBreedingProbability(this.getBreedingProbability());
-            rabbit.setMaxLitterSize(this.getMaxLitterSize());
-            rabbit.setFoods(this.getFoods());
+            buildAnimal(rabbit);
             return rabbit;
         }
-
-
     }
 
 }

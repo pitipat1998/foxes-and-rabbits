@@ -9,7 +9,7 @@ import java.util.List;
 public class Hunter extends Human<Hunter> {
 
     // maximum number of shot
-    private int maximumShots = 10;
+    private int maximumShots = 100;
 
     public int getMaximumShots() {
         return maximumShots;
